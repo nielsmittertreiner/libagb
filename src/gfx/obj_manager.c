@@ -7,12 +7,8 @@ typedef struct sprite_object_node
     sprite_object_node *next;
 } sprite_object_node;
 
-IWRAM_DATA oam_data g_oam_buffer[MAX_OAM_ENTRIES];
-EWRAM_DATA oam_matrix g_oam_matrix_buffer[MAX_OAM_MATRICES];
-EWRAM_DATA sprite_object g_sprites[MAX_OAM_ENTRIES];
-
-EWRAM_DATA uint8_t s_sprite_object_count = 0;
 EWRAM_DATA static sprite_object_node *s_sprite_object_list = NULL;
+EWRAM_DATA uint8_t s_sprite_object_count = 0;
 
 sprite_ptr sprite_object_create(const sprite_object_template *template, vec2i pos)
 {
@@ -94,39 +90,12 @@ void sprite_objects_commit(void)
         oam.tile_num = curr->object.tile_num;
         oam.priority = curr->object.priority;
         oam.palette_num = curr->object.palette_num;
+
         DmaCopy16(3, &oam, (oam_data *)OAM + i, sizeof(oam_data));
         //cpu_copy_16(&oam, (oam_data *)OAM + i, sizeof(oam_data));
         curr = curr->next;
         i++;
     }
-}
-
-void sprite_objects_copy(void)
-{
-    sprite_object_node *curr = s_sprite_object_list;
-    oam_data oam;
-    uint8_t index = 0;
-
-    while (curr != NULL)
-    {
-        oam.x = vec2fp_to_vec2i(curr->object.pos).x;
-        oam.y = vec2fp_to_vec2i(curr->object.pos).y;
-        oam.affine_mode = curr->object.affine_mode;
-        oam.object_mode = curr->object.object_mode;
-        oam.mosaic = curr->object.mosaic;
-        oam.bpp = curr->object.bpp;
-        oam.shape = curr->object.shape;
-        oam.size = curr->object.size;
-        oam.matrix_num = (curr->object.matrix_num | (curr->object.h_flip << 3) | (curr->object.v_flip << 4));
-        oam.tile_num = curr->object.tile_num;
-        oam.priority = curr->object.priority;
-        oam.palette_num = curr->object.palette_num;
-        
-        g_oam_buffer[index++] = oam;
-        curr = curr->next;
-    }
-
-    DmaCopy32(3, g_oam_buffer, OAM, sizeof(g_oam_buffer));
 }
 
 //sprite_object *get_sprite_object_ptr(uint8_t id)

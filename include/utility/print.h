@@ -3,6 +3,7 @@
 
 #include "agb.h"
 
+// Fix this stuff
 // Crashes system on purpose, will print error info in console
 #define AGB_ASSERT(condition, error_message)                                \
     if(!(condition))                                                        \
