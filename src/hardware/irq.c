@@ -1,7 +1,6 @@
 #include "agb.h"
 
-IWRAM_DATA irq_vector g_irq_vector_table[IRQ_COUNT];
-
+IWRAM_DATA static irq_vector s_irq_vector_table[IRQ_COUNT];
 static uint8_t irq_seach_index(irq_flag irq);
 
 void irq_init(void)
@@ -9,7 +8,7 @@ void irq_init(void)
     REG_IME	= 0;
 
     for (uint32_t i = 0; i < IRQ_COUNT; i++)
-        g_irq_vector_table[i] = NULL;
+        s_irq_vector_table[i] = NULL;
     
     IRQ_VECTOR = irq_main;
     REG_IE = 0;
@@ -20,7 +19,7 @@ void irq_init(void)
 void irq_set(irq_flag irq, irq_vector func)
 {
     uint8_t i = irq_seach_index(irq);
-    g_irq_vector_table[i] = func;
+    s_irq_vector_table[i] = func;
 }
 
 void irq_enable(irq_flag mask)

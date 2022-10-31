@@ -25,8 +25,6 @@ typedef enum
     IRQ_FLAG_GAMEPAK    = BIT(13),
 } irq_flag;
 
-extern irq_vector g_irq_vector_table[IRQ_COUNT];
-
 void irq_init(void);
 void irq_set(irq_flag irq, irq_vector func);
 void irq_enable(irq_flag mask);

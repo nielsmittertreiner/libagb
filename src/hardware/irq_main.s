@@ -5,7 +5,7 @@
     .section .iwram, "ax", %progbits
     .code 32
 
-    .extern g_irq_vector_table
+    .extern s_irq_vector_table
     .set MEM_IO_ADDR, 0x04000000
     .set OFFSET_IE, 0x200
     .set OFFSET_IF, 0x202
@@ -34,7 +34,7 @@ irq_main:
     //   are both triggered at the same time when VBL starts, and VBL is much
     //   longer.
 
-    ldr     r3, =g_irq_vector_table + 4
+    ldr     r3, =s_irq_vector_table + 4
     mov     r2, #(1 << 1)   // HBLANK
     tst     r1, r2
     bne     interrupt_found
