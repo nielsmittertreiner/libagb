@@ -29,10 +29,10 @@ typedef enum
     KEY_INTR_OR     = !KEY_INTR_AND,
 } key_interrupt;
 
-void keys_init(uint8_t repeat_start_delay, uint8_t repeat_continue_delay);
-void keys_read(void);
-uint8_t is_key_new(keys keys);
-uint8_t is_key_held(keys keys);
-uint8_t is_key_repeated(keys keys);
+void input_init(uint8_t repeat_start_delay, uint8_t repeat_continue_delay);
+void input_read(void);
+uint8_t input_new(keys keys);
+uint8_t input_held(keys keys);
+uint8_t input_repeated(keys keys);
 
 #endif // GUARD_AGB_HARDWARE_INPUT_H
