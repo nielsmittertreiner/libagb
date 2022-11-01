@@ -1,6 +1,6 @@
 #include "agb.h"
 
-IWRAM_DATA static irq_vector s_irq_vector_table[IRQ_COUNT];
+IWRAM_DATA irq_vector s_irq_vector_table[IRQ_COUNT];
 static uint8_t irq_seach_index(irq_flag irq);
 
 void irq_init(void)
