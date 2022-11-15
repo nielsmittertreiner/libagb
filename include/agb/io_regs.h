@@ -437,6 +437,7 @@
 #define REG_FIFO_A      (*(vu32 *)REG_ADDR_FIFO_A)
 #define REG_FIFO_B      (*(vu32 *)REG_ADDR_FIFO_B)
 
+#define REG_DMA         ((volatile dma_control *)(REG_BASE + REG_OFFSET_DMA0))
 #define REG_DMA0SAD     (*(vu32 *)REG_ADDR_DMA0SAD)
 #define REG_DMA0DAD     (*(vu32 *)REG_ADDR_DMA0DAD)
 #define REG_DMA0CNT     (*(vu32 *)REG_ADDR_DMA0CNT)
@@ -641,23 +642,23 @@
 #define SOUND_MASTER_ENABLE 0x0080
 
 // DMA
-#define DMA_DEST_INC      0x0000
-#define DMA_DEST_DEC      0x0020
-#define DMA_DEST_FIXED    0x0040
-#define DMA_DEST_RELOAD   0x0060
+#define DMA_DST_INC       0x0000
+#define DMA_DST_DEC       0x0020
+#define DMA_DST_FIXED     0x0040
+#define DMA_DST_RELOAD    0x0060
 #define DMA_SRC_INC       0x0000
 #define DMA_SRC_DEC       0x0080
 #define DMA_SRC_FIXED     0x0100
 #define DMA_REPEAT        0x0200
 #define DMA_16BIT         0x0000
 #define DMA_32BIT         0x0400
-#define DMA_DREQ_ON       0x0800
+#define DMA_DRQ_ENABLE    0x0800
 #define DMA_START_NOW     0x0000
 #define DMA_START_VBLANK  0x1000
 #define DMA_START_HBLANK  0x2000
 #define DMA_START_SPECIAL 0x3000
 #define DMA_START_MASK    0x3000
-#define DMA_INTR_ENABLE   0x4000
+#define DMA_IRQ_ENABLE    0x4000
 #define DMA_ENABLE        0x8000
 
 // timer

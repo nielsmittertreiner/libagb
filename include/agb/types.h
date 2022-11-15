@@ -136,4 +136,14 @@ typedef struct sio_multiplayer_control
     uint16_t data;                  // data
 } sio_multiplayer_control;
 
+// DMA Register Control Structure
+typedef struct dma_control
+{
+	const void *src;
+	void *dst;
+	uint16_t cnt_lo;    // transfer count
+	uint16_t cnt_hi;    // flags
+} dma_control;
+
+
 #endif // GUARD_AGB_AGB_TYPES_H

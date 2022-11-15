@@ -9,6 +9,21 @@ void cpu_fill_16(uint16_t value, void *dst, size_t size);
 void cpu_fill_32(uint32_t value, void *dst, size_t size);
 void cpu_fast_copy(const void *src, void *dst, size_t size);
 void cpu_fast_fill(uint32_t value, void *dst, size_t size);
+void dma_enable(uint32_t dma);
+void dma_disable(uint32_t dma);
+void dma_irq_enable(uint32_t dma);
+void dma_irq_disable(uint32_t dma);
+void dma_drq_enable(uint32_t dma);
+void dma_drq_disable(uint32_t dma);
+void dma_set(uint32_t dma, const void *src, void *dst, uint16_t count, uint16_t flags);
+void dma_copy_16(const void *src, void *dst, size_t size);
+void dma_copy_32(const void *src, void *dst, size_t size);
+void dma_vblank_copy_16(const void *src, void *dst, size_t size);
+void dma_vblank_copy_32(const void *src, void *dst, size_t size);
+void dma_hblank_copy_16(const void *src, void *dst, size_t size);
+void dma_hblank_copy_32(const void *src, void *dst, size_t size);
+void dma_fifo_a(const void *src);
+void dma_fifo_b(const void *src);
 
 #define DmaSet(dmaNum, src, dest, control)        \
 {                                                 \
@@ -23,7 +38,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
     DmaSet(dmaNum,                                                                          \
            src,                                                                             \
            dest,                                                                            \
-           (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_INC | DMA_DEST_INC) << 16 \
+           (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_INC | DMA_DST_INC) << 16 \
          | ((size)/(bit/8)))
 
 #define DmaCopy16(dmaNum, src, dest, size) DmaCopy(dmaNum, src, dest, size, 16)
@@ -33,7 +48,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
     DmaSet(0,                                                                                    \
            src,                                                                                  \
            dest,                                                                                 \
-           (DMA_ENABLE | DMA_START_HBLANK | DMA_##bit##BIT | DMA_SRC_INC | DMA_DEST_INC) << 16 \
+           (DMA_ENABLE | DMA_START_HBLANK | DMA_##bit##BIT | DMA_SRC_INC | DMA_DST_INC) << 16 \
          | ((size)/(bit/8)))
 
 #define DmaCopyHBlank16(src, dest, size) DmaCopyHBlank(src, dest, size, 16)
@@ -43,7 +58,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
     DmaSet(0,                                                                                    \
            src,                                                                                  \
            dest,                                                                                 \
-           (DMA_ENABLE | DMA_START_HBLANK | DMA_##bit##BIT | DMA_SRC_INC | DMA_DEST_FIXED) << 16 \
+           (DMA_ENABLE | DMA_START_HBLANK | DMA_##bit##BIT | DMA_SRC_INC | DMA_DST_FIXED) << 16 \
          | ((size)/(bit/8)))
 
 #define DmaCopyHBlankDestFixed16(src, dest, size) DmaCopyHBlankDestFixed(src, dest, size, 16)
@@ -55,7 +70,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
     DmaSet(dmaNum,                                                                            \
            &tmp,                                                                              \
            dest,                                                                              \
-           (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_FIXED | DMA_DEST_INC) << 16 \
+           (DMA_ENABLE | DMA_START_NOW | DMA_##bit##BIT | DMA_SRC_FIXED | DMA_DST_INC) << 16 \
          | ((size)/(bit/8)));                                                                 \
 }
 
@@ -64,9 +79,9 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
 
 #define DmaClear(dmaNum, dest, size, bit)   \
 {                                           \
-    vu##bit *_dest = (vu##bit *)(dest);     \
+    vu##bit *_DST = (vu##bit *)(dest);     \
     u32 _size = size;                       \
-    DmaFill##bit(dmaNum, 0, _dest, _size);  \
+    DmaFill##bit(dmaNum, 0, _DST, _size);  \
 }
 
 #define DmaClear16(dmaNum, dest, size) DmaClear(dmaNum, dest, size, 16)
@@ -75,7 +90,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
 #define DmaStop(dmaNum)                                         \
 {                                                               \
     vu16 *dmaRegs = (vu16 *)REG_ADDR_DMA##dmaNum;               \
-    dmaRegs[5] &= ~(DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT); \
+    dmaRegs[5] &= ~(DMA_START_MASK | DMA_DRQ_ENABLE  | DMA_REPEAT); \
     dmaRegs[5] &= ~DMA_ENABLE;                                  \
     dmaRegs[5];                                                 \
 }                                                               
@@ -83,7 +98,7 @@ void cpu_fast_fill(uint32_t value, void *dst, size_t size);
 #define DmaStart(dmaNum)                                        \
 {                                                               \
     vu16 *dmaRegs = (vu16 *)REG_ADDR_DMA##dmaNum;               \
-    dmaRegs[5] &= ~(DMA_START_MASK | DMA_DREQ_ON | DMA_REPEAT); \
+    dmaRegs[5] &= ~(DMA_START_MASK | DMA_DRQ_ENABLE  | DMA_REPEAT); \
     dmaRegs[5] &= ~DMA_ENABLE;                                  \
     dmaRegs[5];                                                 \
 }                                                               
