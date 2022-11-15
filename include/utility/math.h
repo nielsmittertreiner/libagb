@@ -55,9 +55,9 @@ fp32_t fp32_ceil(fp32_t n);
 fp16_t fp16_round(fp16_t n);
 fp32_t fp32_round(fp32_t n);
 
-vec2i vec2i_new(fp32_t x, fp32_t y);
+vec2i vec2i_new(int32_t x, int32_t y);
 vec2fp vec2fp_new(fp32_t x, fp32_t y);
-vec2i vec2fp_to_vec2i(vec2fp a);
-vec2fp vec2i_to_vec2fp(vec2i a);
+vec2i vec2i_vec2fp(vec2fp a);
+vec2fp vec2fp_vec2i(vec2i a);
 
 #endif // GUARD_AGB_UTILITY_BENCHMARK_H

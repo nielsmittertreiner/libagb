@@ -152,12 +152,12 @@ inline vec2fp vec2fp_new(fp32_t x, fp32_t y)
     return (vec2fp){x, y};
 }
 
-inline vec2i vec2fp_to_vec2i(vec2fp a)
+inline vec2i vec2i_vec2fp(vec2fp a)
 {
     return (vec2i){int_fp32(a.x), int_fp32(a.y)};
 }
 
-inline vec2fp vec2i_to_vec2fp(vec2i a)
+inline vec2fp vec2fp_vec2i(vec2i a)
 {
     return (vec2fp){fp32_int(a.x), fp32_int(a.y)};
 }
