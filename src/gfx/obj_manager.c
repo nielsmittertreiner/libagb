@@ -116,7 +116,7 @@ ARM_CODE IWRAM_CODE void sprite_objects_merge(sprite_object_node *a, sprite_obje
 
     while (a && b)
     {
-        if (((a->object.priority << 5 | a->object.sub_priority) << 16 | vec2i_vec2fp(a->object.pos).y) >= ((b->object.priority << 5 | b->object.sub_priority) << 16 | vec2i_vec2fp(b->object.pos).y))
+        if (((a->object.priority << 5 | a->object.sub_priority) << 16 | (uint16_t)vec2i_vec2fp(a->object.pos).y) >= ((b->object.priority << 5 | b->object.sub_priority) << 16 | (uint16_t)vec2i_vec2fp(b->object.pos).y))
         {
             new_tail->next = a;
             a = a->next;

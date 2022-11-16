@@ -25,7 +25,7 @@ EWRAM_DATA static sprite_tile_alloc_node *s_sprite_tile_alloc_head = NULL;
 EWRAM_DATA static sprite_palette_alloc_node *s_sprite_palette_alloc_head = NULL;
 EWRAM_DATA static uint32_t s_sprite_matrix_bit_field;
 
-static uint16_t sprite_tiles_alloc_data(uint16_t tile_count)
+static uint16_t sprite_object_tiles_alloc_data(uint16_t tile_count)
 {
     sprite_tile_alloc_node *curr = s_sprite_tile_alloc_head;
     sprite_tile_alloc_node *node;
@@ -63,10 +63,10 @@ static uint16_t sprite_tiles_alloc_data(uint16_t tile_count)
     return node->tile_start;
 }
 
-uint16_t sprite_tiles_alloc(const sprite_object_gfx *tiles)
+uint16_t sprite_object_tiles_alloc(const sprite_object_gfx *tiles)
 {
     size_t tile_size = (tiles->bpp == BPP_4) ? TILE_SIZE_4BPP : TILE_SIZE_8BPP;
-    uint16_t tile_num = sprite_tiles_alloc_data(tiles->size / tile_size);
+    uint16_t tile_num = sprite_object_tiles_alloc_data(tiles->size / tile_size);
 
     AGB_ASSERT(tiles->compression <= COMPRESSION_HUFF, "Invalid compression!");
     switch (tiles->compression)
