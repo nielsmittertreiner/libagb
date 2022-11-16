@@ -54,7 +54,6 @@ static uint16_t sprite_tiles_alloc_data(uint16_t tile_count)
         curr = curr->next;
     }
 
-    AGB_ASSERT(OBJ_TILE_COUNT - (curr->tile_start + curr->tile_count + 1) >= tile_count, "VRAM is full!");
     node = malloc(sizeof(sprite_tile_alloc_node));
     node->tile_start = curr->tile_start + curr->tile_count;
     node->tile_count = tile_count;
@@ -73,7 +72,7 @@ uint16_t sprite_tiles_alloc(const sprite_tiles *tiles)
     switch (tiles->compression)
     {
     case COMPRESSION_NONE:
-        cpu_copy_16(tiles->data, OBJ_VRAM0 + (tile_size * tile_num), tiles->size);
+        dma_copy_16(tiles->data, OBJ_VRAM0 + (tile_size * tile_num), tiles->size);
         break;
     case COMPRESSION_LZ77:
         lz77_uncomp_vram(tiles->data, OBJ_VRAM0 + (tile_size * tile_num));
