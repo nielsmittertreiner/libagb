@@ -63,7 +63,7 @@ static uint16_t sprite_tiles_alloc_data(uint16_t tile_count)
     return node->tile_start;
 }
 
-uint16_t sprite_tiles_alloc(const sprite_tiles *tiles)
+uint16_t sprite_tiles_alloc(const sprite_object_gfx *tiles)
 {
     size_t tile_size = (tiles->bpp == BPP_4) ? TILE_SIZE_4BPP : TILE_SIZE_8BPP;
     uint16_t tile_num = sprite_tiles_alloc_data(tiles->size / tile_size);

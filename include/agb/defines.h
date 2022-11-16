@@ -32,7 +32,7 @@
 #define IWRAM_END           ((void *)IWRAM_START + IWRAM_SIZE)
 
 // Video Palette (1K)
-#define PLTT                ((volatile uint16_t *)0x5000000)
+#define PLTT                ((uint16_t *)0x5000000)
 #define PLTT_SIZE           ((size_t)0x400)
 
 // Video RAM (96K)

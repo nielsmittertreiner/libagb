@@ -51,7 +51,7 @@ typedef struct oam_data
     uint16_t tile_num:10;   // Character No.
     uint16_t priority:2;    // Display priority
     uint16_t palette_num:4; // Palette No.
-    uint16_t affine_param;  // Affine Trasnformation Parameter
+    uint16_t affine_param;  // Affine Transformation Parameter
 } oam_data;
 
 typedef struct oam_matrix
@@ -69,15 +69,15 @@ typedef struct sprite_object
     vec2fp pos;
     sprite_affine_mode affine_mode:2;
     sprite_object_mode object_mode:2;
-    uint32_t mosaic:1;
-    bpp_mode bpp:1;
     sprite_shape shape:2;
     sprite_size size:2;
+    bpp_mode bpp:1;
+    uint32_t mosaic:1;
     uint32_t matrix_num:5;
     uint32_t tile_num:10;
     uint32_t priority:2;
     uint32_t palette_num:4;
-    uint32_t affine_param;
+    uint16_t affine_param;
     uint16_t sub_priority:5;
     uint16_t on_screen:1;
     uint16_t active:1;
@@ -89,8 +89,8 @@ typedef struct sprite_object
 
 typedef struct sprite_object_template
 {
-    const sprite_tiles *tiles;
-    const sprite_palette *palette;
+    const sprite_object_gfx *tiles;
+    const sprite_object_gfx *palette;
     sprite_affine_mode affine_mode:2;
     sprite_object_mode object_mode:2;
     sprite_shape shape:2;
@@ -105,6 +105,8 @@ extern oam_matrix g_oam_matrix_buffer[MAX_OAM_MATRICES];
 
 sprite_ptr sprite_object_create(const sprite_object_template *template, vec2i pos);
 void sprite_object_destroy(sprite_ptr sprite_ptr);
+void sprite_objects_update(void);
+void sprite_objects_sort(void);
 void sprite_objects_commit(void);
 
 #endif // GUARD_AGB_GFX_SPRITE_H
