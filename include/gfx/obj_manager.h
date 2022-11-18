@@ -1,5 +1,5 @@
-#ifndef GUARD_AGB_GFX_SPRITE_H
-#define GUARD_AGB_GFX_SPRITE_H
+#ifndef GUARD_AGB_GFX_OBJ_H
+#define GUARD_AGB_GFX_OBJ_H
 
 #include "agb.h"
 
@@ -12,14 +12,6 @@ typedef enum sprite_object_mode
     SPRITE_OBJECT_BLEND,
     SPRITE_OBJECT_WINDOW,
 } sprite_object_mode;
-
-typedef enum sprite_affine_mode
-{
-    SPRITE_AFFINE_OFF,
-    SPRITE_AFFINE_NORMAL,
-    SPRITE_AFFINE_ERASE,
-    SPRITE_AFFINE_DOUBLE,
-} sprite_affine_mode;
 
 typedef enum sprite_size
 {
@@ -36,11 +28,12 @@ typedef enum sprite_shape
     SPRITE_SHAPE_TALL,
 } sprite_shape;
 
-// OAM Structure
+// OAM Data Structure
 typedef struct oam_data
 {
     uint32_t y:8;           // Y Coordinate
-    uint32_t affine_mode:2; // Affine Mode
+    uint32_t affine:1;      // Affine
+    uint32_t double_size:1; // Double Size
     uint32_t object_mode:2; // OBJ Mode
     uint32_t mosaic:1;      // Mosaic
     uint32_t bpp:1;         // 16 colors/256 colors Select
@@ -51,9 +44,9 @@ typedef struct oam_data
     uint16_t tile_num:10;   // Character No.
     uint16_t priority:2;    // Display priority
     uint16_t palette_num:4; // Palette No.
-    uint16_t affine_param;  // Affine Transformation Parameter
 } oam_data;
 
+// OAM Matrix Structure
 typedef struct oam_matrix
 {
     int16_t a;
@@ -62,22 +55,23 @@ typedef struct oam_matrix
     int16_t d;
 } oam_matrix;
 
+// Sprite Object Structure
 typedef struct sprite_object sprite_object;
 typedef sprite_object *sprite_ptr;
 typedef struct sprite_object
 {
     vec2fp pos;
-    sprite_affine_mode affine_mode:2;
-    sprite_object_mode object_mode:2;
-    sprite_shape shape:2;
-    sprite_size size:2;
-    bpp_mode bpp:1;
+    uint32_t affine:1;
+    uint32_t double_size:1;
+    uint32_t object_mode:2;
+    uint32_t shape:2;
+    uint32_t size:2;
+    uint32_t bpp:1;
     uint32_t mosaic:1;
     uint32_t matrix_num:5;
     uint32_t tile_num:10;
     uint32_t priority:2;
     uint32_t palette_num:4;
-    uint16_t affine_param;
     uint16_t sub_priority:5;
     uint16_t on_screen:1;
     uint16_t active:1;
@@ -87,14 +81,25 @@ typedef struct sprite_object
     void (*func)(sprite_ptr);
 } sprite_object;
 
-typedef struct sprite_object_template
+// Sprite Object Graphics Structure
+typedef struct sprite_object_gfx
+{
+    const void *data;
+    size_t size;
+    compression_type compression;
+    bpp_mode bpp;
+} sprite_object_gfx;
+
+// Sprite Object Template Structure
+typedef struct PACKED sprite_object_template
 {
     const sprite_object_gfx *tiles;
     const sprite_object_gfx *palette;
-    sprite_affine_mode affine_mode:2;
-    sprite_object_mode object_mode:2;
-    sprite_shape shape:2;
-    sprite_size size:2;
+    uint8_t affine:1;
+    uint8_t double_size:1;
+    uint8_t object_mode:2;
+    uint8_t shape:2;
+    uint8_t size:2;
     uint8_t mosaic:1;
     uint8_t priority:2;
     uint8_t sub_priority:5;
@@ -109,4 +114,4 @@ void sprite_objects_update(void);
 void sprite_objects_sort(void);
 void sprite_objects_commit(void);
 
-#endif // GUARD_AGB_GFX_SPRITE_H
+#endif // GUARD_AGB_GFX_OBJ_H

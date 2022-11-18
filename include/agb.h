@@ -32,7 +32,7 @@
 #include "gfx/bg.h"
 #include "gfx/bg_bmp.h"
 #include "gfx/palette.h"
-#include "gfx/obj_vram_manager.h"
 #include "gfx/obj_manager.h"
+#include "gfx/obj_anim_manager.h"
 
 #endif // GUARD_AGB_AGB_H
