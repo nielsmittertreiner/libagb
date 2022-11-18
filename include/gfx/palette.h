@@ -15,9 +15,6 @@ typedef enum bpp_mode
     BPP_8,
 } bpp_mode;
 
-extern uint16_t g_pltt_buffer[PLTT_BUFF_SIZE];
-extern uint8_t g_pltt_uncomp_buffer[PLTT_BUFF_SIZE * 2];
-
 void palette_load_compressed(const uint32_t *src, uint16_t offset, size_t size);
 void palette_load(const void *src, uint16_t offset, compression_type compression, size_t size);
 void palette_fill(uint16_t color, uint16_t offset, size_t size);

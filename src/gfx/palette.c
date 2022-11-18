@@ -1,13 +1,13 @@
 #include "agb.h"
 
-ALIGNED(4) EWRAM_DATA uint16_t g_pltt_buffer[PLTT_BUFF_SIZE];
-ALIGNED(4) EWRAM_DATA uint8_t g_pltt_uncomp_buffer[PLTT_BUFF_SIZE * 2];
+ALIGNED(4) EWRAM_DATA static uint16_t s_pltt_buffer[PLTT_BUFF_SIZE];
+ALIGNED(4) EWRAM_DATA static uint8_t s_pltt_uncomp_buffer[PLTT_BUFF_SIZE * 2];
 
 void palette_load_compressed(const uint32_t *src, uint16_t offset, size_t size)
 {
-    lz77_uncomp_wram(src, g_pltt_uncomp_buffer);
-    cpu_fast_copy(g_pltt_uncomp_buffer, &g_pltt_buffer[offset], size);
-    cpu_fast_copy(g_pltt_uncomp_buffer, (uint16_t *)PLTT + offset, size);
+    lz77_uncomp_wram(src, s_pltt_uncomp_buffer);
+    cpu_fast_copy(s_pltt_uncomp_buffer, &s_pltt_buffer[offset], size);
+    cpu_fast_copy(s_pltt_uncomp_buffer, (uint16_t *)PLTT + offset, size);
 }
 
 void palette_load(const void *src, uint16_t offset, compression_type compression, size_t size)
@@ -15,30 +15,30 @@ void palette_load(const void *src, uint16_t offset, compression_type compression
     switch (compression)
     {
         case COMPRESSION_NONE:
-            cpu_fast_copy(src, &g_pltt_buffer[offset], size);
+            cpu_fast_copy(src, &s_pltt_buffer[offset], size);
             cpu_fast_copy(src, (uint16_t *)PLTT + offset, size);
             break;
         case COMPRESSION_LZ77:
-            lz77_uncomp_wram(src, (uint8_t *)&g_pltt_buffer[offset]);
+            lz77_uncomp_wram(src, (uint8_t *)&s_pltt_buffer[offset]);
             lz77_uncomp_wram(src, (uint16_t *)PLTT + offset);
             break;
         case COMPRESSION_RL:
-            rl_uncomp_vram(src, (uint8_t *)&g_pltt_buffer[offset]);
+            rl_uncomp_vram(src, (uint8_t *)&s_pltt_buffer[offset]);
             rl_uncomp_vram(src, (uint16_t *)PLTT + offset);
             break;
         case COMPRESSION_HUFF:
-            huff_uncomp(src, (uint8_t *)&g_pltt_buffer[offset]);
+            huff_uncomp(src, (uint8_t *)&s_pltt_buffer[offset]);
             huff_uncomp(src, (uint16_t *)PLTT + offset);
             break;
     }
 
-    //cpu_fast_copy(src, &g_pltt_buffer[offset], size);
+    //cpu_fast_copy(src, &s_pltt_buffer[offset], size);
     //cpu_fast_copy(src, (uint16_t *)PLTT + offset, size);
 }
 
 void palette_fill(uint16_t color, uint16_t offset, size_t size)
 {
-    cpu_fast_fill(((color << 16) | (color)), &g_pltt_buffer[offset], size);
+    cpu_fast_fill(((color << 16) | (color)), &s_pltt_buffer[offset], size);
     cpu_fast_fill(((color << 16) | (color)), (uint16_t *)PLTT + offset, size);
 }
 
@@ -51,11 +51,11 @@ void palette_shift(uint16_t offset, size_t size)
 
     for (uint32_t i = 0; i < slots; i++)
     {
-        g_pltt_buffer[offset + i] = g_pltt_buffer[offset + (i + 1)];
+        s_pltt_buffer[offset + i] = s_pltt_buffer[offset + (i + 1)];
         buffer[i] = buffer[i + 1];
     }
 
-    g_pltt_buffer[offset + slots - 1] = g_pltt_buffer[offset];
+    s_pltt_buffer[offset + slots - 1] = s_pltt_buffer[offset];
     buffer[slots - 1] = *(uint16_t *)(PLTT + offset);
 
     cpu_copy_16(buffer, (uint16_t *)PLTT + offset, size);
@@ -70,11 +70,11 @@ void palette_shift_fast(uint16_t offset, size_t size)
 
     for (uint32_t i = 0; i < slots; i++)
     {
-        g_pltt_buffer[offset + i] = g_pltt_buffer[offset + (i + 1)];
+        s_pltt_buffer[offset + i] = s_pltt_buffer[offset + (i + 1)];
         buffer[i] = buffer[i + 1];
     }
 
-    g_pltt_buffer[offset + slots - 1] = g_pltt_buffer[offset];
+    s_pltt_buffer[offset + slots - 1] = s_pltt_buffer[offset];
     buffer[slots - 1] = *(uint16_t *)(PLTT + offset);
 
     cpu_fast_copy(buffer, (void *)PLTT + offset, size);
@@ -100,7 +100,7 @@ void palette_blend(uint16_t offset, uint16_t color, uint8_t y, size_t size)
     uint16_t *dest = (uint16_t *)PLTT + offset;
 
     for (uint32_t i = 0; i < size; i++, dest++)
-        *dest = color_blend(g_pltt_buffer[offset + i], color, y);
+        *dest = color_blend(s_pltt_buffer[offset + i], color, y);
 }
 
 inline uint8_t get_r(uint16_t color)
