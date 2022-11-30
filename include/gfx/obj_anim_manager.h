@@ -35,7 +35,6 @@ typedef struct anim_cmd_loop_start
 {
     uint8_t id;
     uint8_t loops;
-    uint8_t *counter;
 } anim_cmd_loop_start;
 
 typedef struct anim_cmd_loop_end
