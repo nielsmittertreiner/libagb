@@ -102,6 +102,7 @@ void sprite_object_anim_stop(sprite_ptr sprite)
     if (curr->data.sprite == sprite)
     {
         s_sprite_object_anim_data_head = curr->next;
+        free(curr->data.loop_data);
         free(curr);
     }
 
@@ -114,6 +115,7 @@ void sprite_object_anim_stop(sprite_ptr sprite)
     AGB_ASSERT(curr, "sprite doesn't have an animation!");
 
     prev->next = curr->next;
+    free(curr->data.loop_data);
     free(curr);
 }
 
