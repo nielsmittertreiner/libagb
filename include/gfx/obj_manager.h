@@ -81,28 +81,37 @@ typedef struct sprite_object
     void (*func)(sprite_ptr);
 } sprite_object;
 
-// Sprite Object Graphics Structure
-typedef struct sprite_object_gfx
+// Sprite Object Tiles Structure
+typedef struct sprite_object_tiles
+{
+    const void *data;
+    compression_type compression;
+    sprite_shape sprite_shape;
+    sprite_size sprite_size;
+    bpp_mode bpp;
+    size_t size;
+} sprite_object_tiles;
+
+// Sprite Object Palette Structure
+typedef struct sprite_object_pal
 {
     const void *data;
     size_t size;
     compression_type compression;
     bpp_mode bpp;
-} sprite_object_gfx;
+} sprite_object_pal;
 
 // Sprite Object Template Structure
 typedef struct PACKED sprite_object_template
 {
-    const sprite_object_gfx *tiles;
-    const sprite_object_gfx *palette;
-    uint8_t affine:1;
-    uint8_t double_size:1;
-    uint8_t object_mode:2;
-    uint8_t shape:2;
-    uint8_t size:2;
-    uint8_t mosaic:1;
-    uint8_t priority:2;
-    uint8_t sub_priority:5;
+    const sprite_object_tiles *tiles;
+    const sprite_object_pal *palette;
+    uint16_t affine:1;
+    uint16_t double_size:1;
+    uint16_t object_mode:2;
+    uint16_t mosaic:1;
+    uint16_t priority:2;
+    uint16_t sub_priority:5;
     void (*func)(sprite_ptr);
 } sprite_object_template;
 
@@ -113,5 +122,12 @@ void sprite_object_destroy(sprite_ptr sprite_ptr);
 void sprite_objects_update(void);
 void sprite_objects_sort(void);
 void sprite_objects_commit(void);
+size_t sprite_object_tiles_size(sprite_shape shape, sprite_size size, bpp_mode bpp);
+vec2i sprite_object_dimensions(sprite_shape shape, sprite_size size);
+int32_t sprite_object_bottom_position(sprite_ptr sprite);
+vec2fp sprite_object_pos_correct(vec2fp *pos);
+uint16_t sprite_object_tile_start_correct(uint16_t tile_start, bpp_mode bpp);
+const sprite_object_tiles *sprite_object_tiles_data(sprite_ptr sprite);
+uint16_t sprite_tiles_free(void);
 
 #endif // GUARD_AGB_GFX_OBJ_H
