@@ -11,10 +11,10 @@
 
 #define ARM_CODE            __attribute__((target("arm")))
 #define THUMB_CODE          __attribute__((target("thumb")))
-#define IWRAM_CODE          __attribute__((section(".iwram"), long_call))
-#define EWRAM_CODE          __attribute__((section(".ewram"), long_call))
-#define IWRAM_DATA          __attribute__((section(".iwram")))
-#define EWRAM_DATA          __attribute__((section(".ewram")))
+#define IWRAM_CODE          __attribute__((section(".iwram.text"), long_call))
+#define EWRAM_CODE          __attribute__((section(".ewram.text"), long_call))
+#define IWRAM_DATA          __attribute__((section(".iwram.data")))
+#define EWRAM_DATA          __attribute__((section(".ewram.data")))
 #define EWRAM_BSS           __attribute__((section(".sbss")))
 #define ALIGNED(n)          __attribute__((aligned (n)))
 #define PACKED              __attribute__((packed))
@@ -72,7 +72,5 @@
 
 #define TILE_OFFSET_4BPP(n) ((n) * TILE_SIZE_4BPP)
 #define TILE_OFFSET_8BPP(n) ((n) * TILE_SIZE_8BPP)
-
-#define OBJ_TILE_COUNT      ((size_t)1024)
 
 #endif // GUARD_AGB_AGB_DEFINES_H
