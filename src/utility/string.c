@@ -8,19 +8,19 @@ uint32_t strlen(const char *str)
     return len;
 }
 
-char *strcpy(const char *restrict src, char *restrict dst)
+char *strcpy(const char *src, char *dst)
 {
     while ((*dst++ = *src++) != '\0');
     return dst;
 }
 
-char *strcat(const char *restrict src, char *restrict dst)
+char *strcat(const char *src, char *dst)
 {
     while (*dst++ != '\0');
     return strcpy(src, dst);
 }
 
-int32_t strcmp(const char *restrict str1, const char *restrict str2)
+int32_t strcmp(const char *str1, const char *str2)
 {
     while(*str1 && (*str1 == *str2))
     {
