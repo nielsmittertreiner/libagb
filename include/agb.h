@@ -21,7 +21,7 @@
 #include "utility/benchmark.h"
 #include "utility/math.h"
 #include "utility/print.h"
-#include "utility/random.h"
+#include "utility/rand.h"
 #include "utility/string.h"
 #include "utility/task.h"
 
@@ -33,6 +33,8 @@
 #include "gfx/bg_bmp.h"
 #include "gfx/palette.h"
 #include "gfx/obj_manager.h"
+#include "gfx/obj_vram_manager.h"
+#include "gfx/obj_pltt_manager.h"
 #include "gfx/obj_anim_manager.h"
 
 #endif // GUARD_AGB_AGB_H
