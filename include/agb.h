@@ -18,7 +18,7 @@
 #include "bios/swi_uncomp.h"
 #include "bios/swi_wait.h"
 
-#include "utility/benchmark.h"
+#include "utility/profile.h"
 #include "utility/math.h"
 #include "utility/print.h"
 #include "utility/rand.h"

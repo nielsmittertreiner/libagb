@@ -1,6 +1,6 @@
 #include "agb.h"
 
-void benchmark_start(void)
+void profile_start(void)
 {
     REG_TMCNT_L(2) = 0;
     REG_TMCNT_L(3) = 0;
@@ -12,7 +12,7 @@ void benchmark_start(void)
     REG_TMCNT_H(2) = TIMER_1CLK | TIMER_ENABLE;
 }
 
-u32 benchmark_end(void)
+uint32_t profile_stop(void)
 {
     REG_TMCNT_H(2) = 0;
     REG_TMCNT_H(3) = 0;
