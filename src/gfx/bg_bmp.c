@@ -43,7 +43,7 @@ IWRAM_CODE void bg_bmp4_line_plot(vec2i a, vec2i b, uint8_t color, void *dst)
    }
 }
 
-IWRAM_CODE void bg_bmp4_circle_plot(vec2i a, int32_t radius, uint8_t color, void *dst)
+IWRAM_CODE void bg_bmp4_circle_plot(vec2i a, int16_t radius, uint8_t color, void *dst)
 {
     vec2i p = {-radius, 0};
     int32_t err = 2 - 2 * radius;

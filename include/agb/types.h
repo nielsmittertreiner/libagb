@@ -28,8 +28,8 @@ typedef int32_t fp32_t;
 
 typedef struct vec2i
 {
-    int32_t x;
-    int32_t y;
+    int16_t x;
+    int16_t y;
 } vec2i;
 
 typedef struct vec2fp
