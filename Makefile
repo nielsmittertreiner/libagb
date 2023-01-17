@@ -18,7 +18,7 @@ DATA		:=	data
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-mthumb -mthumb-interwork
-CFLAGS	:=	-g -Og -Wall -Wno-switch -Wno-multichar $(ARCH) $(INCLUDE)
+CFLAGS	:=	-g -O2 -Wall -Wno-switch -Wno-multichar $(ARCH) $(INCLUDE)
 ASFLAGS	:=	-g -Wa,--warn $(ARCH)
 
 #---------------------------------------------------------------------------------
