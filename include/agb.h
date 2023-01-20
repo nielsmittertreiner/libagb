@@ -23,7 +23,6 @@
 #include "utility/print.h"
 #include "utility/rand.h"
 #include "utility/string.h"
-#include "utility/task.h"
 
 #include "hardware/input.h"
 #include "hardware/irq.h"
