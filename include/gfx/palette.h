@@ -3,7 +3,6 @@
 
 #include "agb.h"
 
-#define PLTT_BUFF_SIZE      0x200
 #define PLTT_Y_MIN          0x00
 #define PLTT_Y_MAX          0x20 
 #define PLTT_SIZEOF_4BPP    pltt_sizeof(16)
@@ -15,7 +14,6 @@ typedef enum bpp_mode
     BPP_8,
 } bpp_mode;
 
-void palette_load_compressed(const uint32_t *src, uint16_t offset, size_t size);
 void palette_load(const void *src, uint16_t offset, compression_type compression, size_t size);
 void palette_fill(uint16_t color, uint16_t offset, size_t size);
 void palette_shift(uint16_t offset, size_t size);

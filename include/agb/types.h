@@ -1,56 +1,26 @@
 #ifndef GUARD_AGB_AGB_TYPES_H
 #define GUARD_AGB_AGB_TYPES_H
 
-typedef unsigned char           u8;
-typedef unsigned short int      u16;
-typedef unsigned int            u32;
-typedef unsigned long long int  u64;
-typedef signed char             s8;
-typedef signed short int        s16;
-typedef signed int              s32;
-typedef signed long long int    s64;
-typedef float                   f32;
-typedef double                  f64;
-
-typedef volatile u8             vu8;
-typedef volatile u16            vu16;
-typedef volatile u32            vu32;
-typedef volatile u64            vu64;
-typedef volatile s8             vs8;
-typedef volatile s16            vs16;
-typedef volatile s32            vs32;
-typedef volatile s64            vs64;
-typedef volatile f32            vf32;
-typedef volatile f64            vf64;
-
 typedef int16_t fp16_t;
 typedef int32_t fp32_t;
 
-typedef struct vec2i
+typedef struct vec2i_t
 {
     int16_t x;
     int16_t y;
-} vec2i;
+} vec2i_t;
 
-typedef struct vec2fp
+typedef struct vec2fp16_t
+{
+    fp16_t x;
+    fp16_t y;
+} vec2fp16_t;
+
+typedef struct vec2fp32_t
 {
     fp32_t x;
     fp32_t y;
-} vec2fp;
-
-typedef struct vec3i
-{
-    int32_t x;
-    int32_t y;
-    int32_t z;
-} vec3i;
-
-typedef struct vec3fp
-{
-    fp32_t x;
-    fp32_t y;
-    fp32_t z;
-} vec3fp;
+} vec2fp32_t;
 
 // Display Control Structure
 typedef struct display_control

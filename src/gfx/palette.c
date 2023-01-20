@@ -1,14 +1,6 @@
 #include "agb.h"
 
-ALIGNED(4) EWRAM_DATA static uint16_t s_pltt_buffer[PLTT_BUFF_SIZE];
-ALIGNED(4) EWRAM_DATA static uint8_t s_pltt_uncomp_buffer[PLTT_BUFF_SIZE * 2];
-
-void palette_load_compressed(const uint32_t *src, uint16_t offset, size_t size)
-{
-    lz77_uncomp_wram(src, s_pltt_uncomp_buffer);
-    cpu_fast_copy(s_pltt_uncomp_buffer, &s_pltt_buffer[offset], size);
-    cpu_fast_copy(s_pltt_uncomp_buffer, (uint16_t *)PLTT + offset, size);
-}
+ALIGNED(4) EWRAM_DATA static uint16_t s_pltt_buffer[512];
 
 void palette_load(const void *src, uint16_t offset, compression_type compression, size_t size)
 {
@@ -31,9 +23,6 @@ void palette_load(const void *src, uint16_t offset, compression_type compression
             huff_uncomp(src, (uint16_t *)PLTT + offset);
             break;
     }
-
-    //cpu_fast_copy(src, &s_pltt_buffer[offset], size);
-    //cpu_fast_copy(src, (uint16_t *)PLTT + offset, size);
 }
 
 void palette_fill(uint16_t color, uint16_t offset, size_t size)

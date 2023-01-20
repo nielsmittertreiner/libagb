@@ -3,7 +3,7 @@
 
 #include "agb.h"
 
-typedef enum
+typedef enum reset_flag
 {
     RESET_EWRAM         = BIT(0),
     RESET_IWRAM         = BIT(1),

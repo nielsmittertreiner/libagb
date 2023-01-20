@@ -23,20 +23,19 @@
 #define IRQ_VECTOR          (*(void **)0x3007FFC)
 
 // External Working RAM (256K)
-#define EWRAM_START         ((void *)0x02000000)
+#define EWRAM               ((volatile uint16_t *)0x02000000)
 #define EWRAM_SIZE          ((size_t)0x40000)
 
 // Internal Working RAM (32K)
-#define IWRAM_START         ((void *)0x03000000)
+#define IWRAM               ((volatile uint32_t *)0x03000000)
 #define IWRAM_SIZE          ((size_t)0x8000)
-#define IWRAM_END           ((void *)IWRAM_START + IWRAM_SIZE)
 
 // Video Palette (1K)
-#define PLTT                ((uint16_t *)0x5000000)
+#define PLTT                ((volatile uint16_t *)0x5000000)
 #define PLTT_SIZE           ((size_t)0x400)
 
 // Video RAM (96K)
-#define VRAM                ((void *)0x6000000)
+#define VRAM                ((volatile uint16_t *)0x6000000)
 #define VRAM_SIZE           ((size_t)0x18000)
 
 #define BG_VRAM             VRAM
@@ -59,7 +58,7 @@
 #define OBJ_VRAM1           (VRAM + 0x14000)
 #define OBJ_VRAM1_SIZE      ((size_t)0x4000)
 
-#define OAM                 ((void *)0x7000000)
+#define OAM                 ((volatile oam_data *)0x7000000)
 #define OAM_SIZE            ((size_t)0x400)
 
 #define ROM_HEADER_SIZE     ((size_t)0xC0)
@@ -69,8 +68,5 @@
 
 #define TILE_SIZE_4BPP      ((size_t)32)
 #define TILE_SIZE_8BPP      ((size_t)64)
-
-#define TILE_OFFSET_4BPP(n) ((n) * TILE_SIZE_4BPP)
-#define TILE_OFFSET_8BPP(n) ((n) * TILE_SIZE_8BPP)
 
 #endif // GUARD_AGB_AGB_DEFINES_H

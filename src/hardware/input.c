@@ -3,70 +3,66 @@
 #define KEYS_MASK           0x03FF
 #define KEYS_MASK_EXCL_DPAD 0x030F
 
-typedef struct
+typedef struct key_input
 {
     uint16_t new;
     uint16_t held;
     uint16_t repeated;
-    uint16_t repeat_counter;
+    uint16_t counter;
     uint16_t repeat_start_delay;
-    uint8_t repeat_continue_delay;
+    uint16_t repeat_continue_delay;
 } key_input;
 
-IWRAM_DATA static key_input s_input;
+EWRAM_DATA ALIGNED(4) static key_input input;
 
-void input_init(uint8_t repeat_start_delay, uint8_t repeat_continue_delay)
+void input_init(uint16_t repeat_start_delay, uint16_t repeat_continue_delay)
 {
-    s_input.repeat_counter = repeat_start_delay;
-    s_input.repeat_start_delay = repeat_start_delay;
-    s_input.repeat_continue_delay = repeat_continue_delay;
+    input.counter = repeat_start_delay;
+    input.repeat_start_delay = repeat_start_delay;
+    input.repeat_continue_delay = repeat_continue_delay;
 }
 
 void input_read(void)
 {
-    uint16_t input = REG_KEYINPUT ^ KEYS_MASK;
+    uint16_t current = ~REG_KEYINPUT & KEYS_MASK;
 
-    s_input.new = input & ~s_input.held;
-    s_input.repeated = s_input.new;
+    input.new = current & ~input.held;
+    input.repeated = input.new;
 
-    if (input != 0 && s_input.held == input)
+    if (current && current == input.held)
     {
-        s_input.repeat_counter--;
+        input.counter--;
 
-        if (s_input.repeat_counter == 0)
+        if (input.counter == 0)
         {
-            s_input.repeated = input;
-            s_input.repeat_counter = s_input.repeat_continue_delay;
+            input.repeated = current;
+            input.counter = input.repeat_continue_delay;
         }
     }
     else
     {
-        s_input.repeat_counter = s_input.repeat_start_delay;
+        input.counter = input.repeat_start_delay;
     }
 
-    s_input.held = input;
+    input.held = current;
 }
 
-uint8_t input_new(keys keys)
+inline uint8_t input_new(keys keys)
 {
-    if (s_input.new & keys)
-        return TRUE;
-    
-    return FALSE;
+    return input.new & keys;
 }
 
-uint8_t input_held(keys keys)
+inline uint8_t input_held(keys keys)
 {
-    if (s_input.held & keys)
-        return TRUE;
-    
-    return FALSE;
+    return input.held & keys;
 }
 
-uint8_t input_repeated(keys keys)
+inline uint8_t input_repeated(keys keys)
 {
-    if (s_input.repeated & keys)
-        return TRUE;
-    
-    return FALSE;
+    return input.repeated & keys;
+}
+
+inline vec2i_t input_dpad_direction(void)
+{
+    return (vec2i_t){((input.held >> 4) & 1) - ((input.held >> 5) & 1), ((input.held >> 7) & 1) - ((input.held >> 6) & 1)};
 }

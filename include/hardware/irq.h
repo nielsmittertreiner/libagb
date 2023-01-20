@@ -7,7 +7,7 @@
 
 typedef void (*irq_vector)(void);
 
-typedef enum
+typedef enum irq_flag
 {
     IRQ_FLAG_VBLANK     = BIT(0),
     IRQ_FLAG_HBLANK     = BIT(1),
@@ -25,13 +25,12 @@ typedef enum
     IRQ_FLAG_GAMEPAK    = BIT(13),
 } irq_flag;
 
-extern irq_vector s_irq_vector_table[IRQ_COUNT];
+extern irq_vector irq_vector_table[IRQ_COUNT];
 
 void irq_init(void);
 void irq_set(irq_flag irq, irq_vector func);
 void irq_enable(irq_flag mask);
 void irq_disable(irq_flag mask);
 void irq_set_vcount(uint8_t scanline);
-void irq_main(void);
 
 #endif // GUARD_AGB_HARDWARE_INTERRUPTS_H

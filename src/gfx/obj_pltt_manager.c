@@ -48,7 +48,7 @@ static uint16_t sprite_object_palette_alloc_data(const sprite_object_palette *pa
 
     while (curr->next)
     {
-        AGB_ASSERT(!(curr->data != palette->data) && (curr->bpp == BPP_8 && palette->bpp == BPP_8), "A different 8BPP palette has already been loaded!");
+        //AGB_ASSERT(!(curr->data != palette->data) && (curr->bpp == BPP_8 && palette->bpp == BPP_8), "A different 8BPP palette has already been loaded!");
 
         if (curr->data == palette->data)
         {

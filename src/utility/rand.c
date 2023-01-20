@@ -13,7 +13,7 @@ inline uint32_t rand_seed(uint32_t seed)
     return s[0];
 }
 
-inline uint32_t rand_next(void)
+uint32_t rand_next(void)
 {
     const uint32_t r = rotl(s[0] + s[3], 7) + s[0];
     const uint32_t t = s[0] << 9;

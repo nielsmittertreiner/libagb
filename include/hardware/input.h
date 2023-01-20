@@ -3,7 +3,7 @@
 
 #include "agb.h"
 
-typedef enum
+typedef enum keys
 {
     A_BUTTON            = BIT(0),
     B_BUTTON            = BIT(1),
@@ -22,17 +22,18 @@ typedef enum
     KEYS_ANY            = (BITS(10)),
 } keys;
 
-typedef enum
+typedef enum key_interrupt
 {
     KEY_INTR_ENABLE = BIT(14),
     KEY_INTR_AND    = BIT(15),
     KEY_INTR_OR     = !KEY_INTR_AND,
 } key_interrupt;
 
-void input_init(uint8_t repeat_start_delay, uint8_t repeat_continue_delay);
+void input_init(uint16_t repeat_start_delay, uint16_t repeat_continue_delay);
 void input_read(void);
 uint8_t input_new(keys keys);
 uint8_t input_held(keys keys);
 uint8_t input_repeated(keys keys);
+vec2i_t input_dpad_direction(void);
 
 #endif // GUARD_AGB_HARDWARE_INPUT_H
