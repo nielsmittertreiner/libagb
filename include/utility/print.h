@@ -7,9 +7,9 @@
 // Crashes system on purpose, will print error info in console
 #define AGB_ASSERT(condition, error_message)                                \
     if(!(condition))                                                        \
-        agb_assert(#condition, #error_message, __func__, __FILE__, __LINE__);
+        agb_assert(#condition, #error_message, __func__, __FILE__, __LINE__)
 
-typedef enum
+typedef enum log_level
 {
     LOG_LEVEL_FATAL,
     LOG_LEVEL_ERROR,
@@ -19,7 +19,7 @@ typedef enum
 } log_level;
 
 uint32_t agb_print_init(void);
-void agb_printf(log_level level, const char* str, ...);
-void agb_assert(const char* condition, const char* error_message, const char* function, const char* file_name, uint32_t line);
+int32_t agb_printf(log_level level, const char *str, ...);
+void agb_assert(const char *condition, const char *error_message, const char *function, const char *file_name, uint32_t line);
 
 #endif // GUARD_AGB_UTILITY_PRINT_H
