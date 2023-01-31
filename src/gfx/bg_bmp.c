@@ -1,21 +1,21 @@
 #include "agb.h"
 
-IWRAM_CODE inline void bg_bmp4_pixel_plot(vec2i a, uint8_t color, void *dst)
+IWRAM_CODE inline void bg_bmp4_pixel_plot(vec2i_t a, uint8_t color, void *dst)
 {
     uint32_t shift = (a.x & 1) << 3;
     uint16_t *pixel = (uint16_t *)(dst + a.y * DISPLAY_WIDTH + (a.x & ~1));
     *pixel = ((0xFF00 >> shift) & *pixel) | (color << shift);
 }
 
-IWRAM_CODE inline uint8_t bg_bmp4_pixel_get(vec2i a, void *src)
+IWRAM_CODE inline uint8_t bg_bmp4_pixel_get(vec2i_t a, void *src)
 {
     return *(uint16_t *)(src + a.y * DISPLAY_WIDTH + (a.x & ~1));
 }
 
-IWRAM_CODE void bg_bmp4_line_plot(vec2i a, vec2i b, uint8_t color, void *dst)
+IWRAM_CODE void bg_bmp4_line_plot(vec2i_t a, vec2i_t b, uint8_t color, void *dst)
 {
-    vec2i d = {abs(b.x - a.x), -abs(b.y - a.y)};
-    vec2i s = {a.x < b.x ? 1 : -1, a.y < b.y ? 1 : -1};
+    vec2i_t d = {abs(b.x - a.x), -abs(b.y - a.y)};
+    vec2i_t s = {a.x < b.x ? 1 : -1, a.y < b.y ? 1 : -1};
     int32_t err = d.x + d.y;
     int32_t err_xy;
 
@@ -43,9 +43,9 @@ IWRAM_CODE void bg_bmp4_line_plot(vec2i a, vec2i b, uint8_t color, void *dst)
    }
 }
 
-IWRAM_CODE void bg_bmp4_circle_plot(vec2i a, int16_t radius, uint8_t color, void *dst)
+IWRAM_CODE void bg_bmp4_circle_plot(vec2i_t a, int16_t radius, uint8_t color, void *dst)
 {
-    vec2i p = {-radius, 0};
+    vec2i_t p = {-radius, 0};
     int32_t err = 2 - 2 * radius;
 
     do
