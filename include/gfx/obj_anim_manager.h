@@ -15,10 +15,8 @@ typedef enum anim_cmd_type
 
 typedef struct anim_cmd_frame
 {
-    uint32_t frame:9;
-    uint32_t duration:16;
-    uint32_t v_flip:1;
-    uint32_t h_flip:1;
+    uint16_t frame;
+    uint16_t duration;
 } anim_cmd_frame;
 
 typedef struct anim_cmd_delay
@@ -58,5 +56,6 @@ typedef struct anim_cmd
 void sprite_object_anim_play(sprite_ptr sprite);
 void sprite_object_anim_start(sprite_ptr sprite, const anim_cmd *anim);
 void sprite_object_anim_stop(sprite_ptr sprite);
+const anim_cmd *sprite_object_active_anim(sprite_ptr sprite);
 
 #endif // GUARD_AGB_GFX_OBJ_ANIM_H

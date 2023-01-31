@@ -119,6 +119,23 @@ void sprite_object_anim_stop(sprite_ptr sprite)
     free(curr);
 }
 
+const anim_cmd *sprite_object_active_anim(sprite_ptr sprite)
+{
+    anim_data_node *curr = s_sprite_object_anim_data_head;
+
+    while (curr)
+    {
+        if (curr->data.sprite == sprite)
+        {
+            return curr->data.anims;
+        }
+
+        curr = curr->next;
+    }
+
+    return NULL;
+}
+
 static anim_loop *anim_loop_data(const anim_cmd *anim)
 {
     anim_loop *ptr = NULL;
@@ -155,12 +172,6 @@ static int16_t anim_func_frame(anim_data *anim)
     void *buffer = malloc(anim->tiles->size);
 
     anim->counter = anim->anims[anim->cmd].frame.duration;
-
-    if (!anim->sprite->affine && !anim->sprite->double_size)
-    {
-        anim->sprite->h_flip = anim->anims[anim->cmd].frame.h_flip;
-        anim->sprite->v_flip = anim->anims[anim->cmd].frame.v_flip;
-    }
 
     switch (anim->tiles->compression)
     {
